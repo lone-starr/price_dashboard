@@ -1,7 +1,6 @@
 # Price Charts
 
-This repository builds a basic dashboard using data saved from the [Mempool.space REST API](https://mempool.space/docs/api/rest). This data is persisted to a MongoDB instance by the [price_api repo](https://github.com/lone-starr/price_api)
-hosted on [Railway](https://railway.app) and invoked every 5 minutes by a CRON job in Railway.
+This repository builds a basic dashboard using CPI data from https://download.bls.gov/pub/time.series/ap/ and Bitcoin price data from https://www.in2013dollars.com/bitcoin-price
 
 ## Setting Up
 
@@ -37,14 +36,6 @@ Open a new Terminal in VS Code and use the following command to install the requ
 
 ```bash
 pip install -r requirements.txt
-```
-
-## Environment Variables
-
-Create a .env file with the necessary credentials and API keys for your MongoDB instance. You can create a free cluster to host your collection at https://cloud.mongodb.com/ or create a MongoDB instance on Railway.
-
-```
-MONGO_URI=mongodb+srv://XXX:YYYYYYYYYYYY@clusterName.ZZZZZ.mongodb.net/?retryWrites=true&w=majority
 ```
 
 ## Run locally
