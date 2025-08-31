@@ -15,6 +15,8 @@ def load_series():
     df = pd.read_csv("ap.series", sep="\t", dtype=str, keep_default_na=False)
     df.columns = df.columns.str.strip()
     df = df.applymap(lambda x: x.strip())
+    df["begin_year"] = pd.to_numeric(df["begin_year"], errors="coerce")
+    df = df[df["begin_year"] >= 2017]
     return df[["series_id", "series_title"]].to_dict(orient="records")
 
 
@@ -24,6 +26,8 @@ def load_price():
                      dtype=str, keep_default_na=False)
     df.columns = df.columns.str.strip()
     df = df.applymap(lambda x: x.strip())
+    df["year"] = pd.to_numeric(df["year"], errors="coerce")
+    df = df[df["year"] >= 2017]
     return df[["series_id", "year", "period", "value"]]
 
 
@@ -33,6 +37,8 @@ def load_bitcoin_price():
                      dtype=str, keep_default_na=False)
     df.columns = df.columns.str.strip()
     df = df.applymap(lambda x: x.strip())
+    df["year"] = pd.to_numeric(df["year"], errors="coerce")
+    df = df[df["year"] >= 2017]
     return df[["year", "period", "value"]]
 
 
@@ -63,7 +69,7 @@ if selected:
     # Filter year
     df_filtered = df_filtered.copy()
     df_filtered["year"] = df_filtered["year"].astype(int)
-    df_filtered = df_filtered[df_filtered["year"] >= 2010]
+    # df_filtered = df_filtered[df_filtered["year"] >= 2017]
 
     # Annual (M13) rows
     annual_m13 = (
@@ -112,8 +118,6 @@ if selected:
     btc_annual = bitcoin_prices.groupby(
         "year", as_index=False).agg(bitcoin_price=("value", "mean"))
 
-    st.dataframe(btc_annual)
-
     # merge with CPI annual averages
     merged = pd.merge(annual_table, btc_annual, on="year", how="left")
 
@@ -137,8 +141,33 @@ if selected:
         use_container_width=True
     )
 
-    # (Optional) make nice legend labels by renaming first
+    # Nice legend labels by renaming first
     plot_df = merged.rename(columns={
         "price_in_usd": "Price (USD)",
-        "price_in_btc": "Price (BTC)"
+        "price_in_bitcoin": "Price (Bitcoin)",
+        "price_in_sats": "Price (Sats)",
     })
+
+    # Ensure year is numeric for plotting
+    plot_df = plot_df.copy()
+    plot_df["year"] = plot_df["year"].astype(int)
+
+    # Charts
+    base = alt.Chart(plot_df).encode(
+        x=alt.X("year:O", title="Year", axis=alt.Axis(labelAngle=0))
+    )
+
+    usd_chart = (
+        base.mark_line(point=True)
+        .encode(y=alt.Y("Price (USD):Q", title="Price (USD)"))
+        .properties(width=700, height=260, title=f"{series_title} — Annual Average (USD)")
+    )
+
+    sats_chart = (
+        base.mark_line(point=True)
+        .encode(y=alt.Y("Price (Sats):Q", title="Price (sats)"))
+        .properties(width=700, height=260, title=f"{series_title} — Annual Average (sats)")
+    )
+
+    st.altair_chart(alt.vconcat(usd_chart, sats_chart),
+                    use_container_width=False)
