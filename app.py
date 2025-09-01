@@ -160,16 +160,16 @@ else:
     df_display = merged.copy()
     df_display["Price (USD)"] = df_display["price_in_usd"].map(
         lambda x: f"$ {x:,.2f}")
+    df_display["Price (Satoshis)"] = df_display["price_in_sats"].map(
+        lambda x: f"{x:,.2f} sats")
     df_display["Price (Bitcoin)"] = df_display["price_in_bitcoin"].map(
         lambda x: f"{x:,.8f} \u20BF")
-    df_display["Price (Sats)"] = df_display["price_in_sats"].map(
-        lambda x: f"{x:,.2f} sats")
     df_display["BTC/USD Avg"] = df_display["bitcoin_price"].map(
         lambda x: f"$ {x:,.2f}")
 
     st.dataframe(
-        df_display[["year", "Price (USD)", "Price (Bitcoin)",
-                    "Price (Sats)", "BTC/USD Avg", "months", "source"]]
+        df_display[["year", "Price (USD)", "Price (Satoshis)", "Price (Bitcoin)",
+                    "BTC/USD Avg", "months", "source"]]
         .rename(columns={"year": "Year", "months": "Months Used", "source": "Method"}),
         use_container_width=True
     )
