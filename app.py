@@ -126,19 +126,25 @@ if selected:
     merged["price_in_bitcoin"] = merged["avg_price"] / merged["bitcoin_price"]
     merged["price_in_sats"] = merged["price_in_bitcoin"] * 100_000_000
     merged["price_in_sats"] = merged["price_in_sats"].round(2)
+    merged["bitcoin_price"] = merged["bitcoin_price"].round(2)
 
     # display
     st.write("### Annual average price (USD and BTC)")
+
+    df_display = merged.copy()
+    df_display["Price (USD)"] = df_display["price_in_usd"].map(
+        lambda x: f"$ {x:,.2f}")
+    df_display["Price (Bitcoin)"] = df_display["price_in_bitcoin"].map(
+        lambda x: f"{x:,.8f} \u20BF")
+    df_display["Price (Sats)"] = df_display["price_in_sats"].map(
+        lambda x: f"{x:,.2f} sats")
+    df_display["BTC/USD Avg"] = df_display["bitcoin_price"].map(
+        lambda x: f"$ {x:,.2f}")
+
     st.dataframe(
-        merged.rename(columns={
-            "year": "Year",
-            "price_in_usd": "Price (USD)",
-            "price_in_bitcoin": "Price (Bitcoin)",
-            "price_in_sats": "Price (Sats)",
-            "bitcoin_price": "Bitcoin/USD Avg",
-            "months": "Months Used",
-            "source": "Method"
-        })[["Year", "Price (USD)", "Price (Bitcoin)", "Price (Sats)", "Bitcoin/USD Avg", "Months Used", "Method"]],
+        df_display[["year", "Price (USD)", "Price (Bitcoin)",
+                    "Price (Sats)", "BTC/USD Avg", "months", "source"]]
+        .rename(columns={"year": "Year", "months": "Months Used", "source": "Method"}),
         use_container_width=True
     )
 
