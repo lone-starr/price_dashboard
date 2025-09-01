@@ -7,7 +7,15 @@ from dotenv import load_dotenv
 
 load_dotenv(".env")
 
+st.set_page_config(
+    page_title="CPI • USD vs Bitcoin",
+    page_icon="₿",
+    layout="centered",
+)
+
 st.title("The Consumer Price Index Through Two Lenses: Dollars vs. Bitcoin")
+st.caption(
+    "Explore how inflation in USD compares to deflationary Bitcoin (expressed in sats).")
 
 
 @st.cache_data
@@ -191,3 +199,7 @@ if selected:
 
     st.altair_chart(alt.vconcat(usd_chart, sats_chart),
                     use_container_width=False)
+
+st.markdown("---")
+st.markdown(
+    "Built by [lone-starr](https://github.com/lone-starr) • View source on [GitHub](https://github.com/lone-starr/price_dashboard)")
