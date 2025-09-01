@@ -125,6 +125,7 @@ if selected:
     merged["price_in_usd"] = merged["avg_price"]
     merged["price_in_bitcoin"] = merged["avg_price"] / merged["bitcoin_price"]
     merged["price_in_sats"] = merged["price_in_bitcoin"] * 100_000_000
+    merged["price_in_sats"] = merged["price_in_sats"].round(2)
 
     # display
     st.write("### Annual average price (USD and BTC)")
