@@ -18,6 +18,25 @@ st.caption(
     "Explore how inflation in USD compares to deflationary Bitcoin (expressed in sats).")
 
 
+# --- put this near your other functions ---
+def highlight_changes(df, numeric_cols):
+    """
+    Return a DataFrame of styles (same shape as df[numeric_cols]).
+    Green if value > previous row, red if value < previous row.
+    """
+    styles = pd.DataFrame("", index=df.index, columns=numeric_cols)
+    for col in numeric_cols:
+        prev = df[col].shift(1)
+        for i in df.index:
+            if pd.isna(prev.loc[i]):
+                continue  # first row stays unstyled
+            elif df.loc[i, col] > prev.loc[i]:
+                styles.loc[i, col] = "color: #F08080; font-weight: bold;"
+            elif df.loc[i, col] < prev.loc[i]:
+                styles.loc[i, col] = "color: #7CFC00; font-weight: bold;"
+    return styles
+
+
 @st.cache_data
 def load_series():
     df = pd.read_csv("ap.series", sep="\t", dtype=str, keep_default_na=False)
@@ -167,12 +186,27 @@ else:
     df_display["BTC/USD Avg"] = df_display["bitcoin_price"].map(
         lambda x: f"$ {x:,.2f}")
 
-    st.dataframe(
+    # Pick numeric columns you want to compare
+    numeric_cols = ["price_in_usd", "price_in_bitcoin", "price_in_sats"]
+
+    # Create your display DataFrame with formatted strings
+    df_out = (
         df_display[["year", "Price (USD)", "Price (Satoshis)", "Price (Bitcoin)",
                     "BTC/USD Avg", "months", "source"]]
-        .rename(columns={"year": "Year", "months": "Months Used", "source": "Method"}),
-        use_container_width=True
+        .rename(columns={"year": "Year", "months": "Months Used", "source": "Method"})
     )
+
+    # Apply styling to the *visible* formatted columns,
+    # but use the numeric versions for comparison
+    styler = df_out.style.apply(
+        lambda _: highlight_changes(merged, numeric_cols).reindex(columns=[
+            "price_in_usd", "price_in_bitcoin", "price_in_sats"
+        ]).set_axis(["Price (USD)", "Price (Bitcoin)", "Price (Satoshis)"], axis=1).values,
+        axis=None,
+        subset=["Price (USD)", "Price (Bitcoin)", "Price (Satoshis)"]
+    )
+
+    st.dataframe(styler, use_container_width=True)
 
     # Nice legend labels by renaming first
     plot_df = merged.rename(columns={
