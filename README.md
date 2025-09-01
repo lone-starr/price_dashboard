@@ -2,6 +2,8 @@
 
 This repository builds a basic dashboard using CPI data from https://download.bls.gov/pub/time.series/ap/ and Bitcoin price data from https://www.in2013dollars.com/bitcoin-price
 
+View charts at https://cpi.lonestarr.xyz/
+
 ## Setting Up
 
 Clone the Repository:
