@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv(".env")
 
-st.title("CPI Price Data")
+st.title("The Consumer Price Index Through Two Lenses: Dollars vs. Bitcoin")
 
 
 @st.cache_data
