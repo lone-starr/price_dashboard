@@ -67,17 +67,22 @@ series = load_series()
 prices = load_price()
 bitcoin_prices = load_bitcoin_price()
 
-# Show titles in the dropdown, return the whole record
+options = [None] + series
+
 selected = st.selectbox(
-    "Series Name",
-    series,
-    format_func=lambda r: r["series_title"] if isinstance(r, dict) else r,
+    "Select CPI Series Item to view price info",
+    options,
+    format_func=lambda r: r["series_title"] if isinstance(
+        r, dict) else "-- Select a series --",
+    index=0
 )
 
-if selected:
+if not selected:
+    st.info("Please select a series to continue.")
+else:
     series_id = selected["series_id"]
     series_title = selected["series_title"]
-    st.write(f"**Selected ID:** `{series_id}`")
+    st.write(f"**Selected CPI Series ID:** `{series_id}`")
     st.write(f"`{series_title}`")
 
     # Filter prices for this series and year
