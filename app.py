@@ -15,10 +15,21 @@ def load_series():
     df = pd.read_csv("ap.series", sep="\t", dtype=str, keep_default_na=False)
     df.columns = df.columns.str.strip()
     df = df.applymap(lambda x: x.strip())
+
+    # drop duplicate id/title combos
     df = df.drop_duplicates(subset=["series_id", "series_title"])
+
+    # keep only titles containing "U.S. City Average"
+    df = df[df["series_title"].str.contains(
+        "U.S. City Average", case=False, na=False)]
+
+    # sort alphabetically
     df = df.sort_values(by="series_title", ascending=True)
+
+    # filter by end year
     df["end_year"] = pd.to_numeric(df["end_year"], errors="coerce")
     df = df[df["end_year"] >= 2017]
+
     return df[["series_id", "series_title"]].to_dict(orient="records")
 
 
