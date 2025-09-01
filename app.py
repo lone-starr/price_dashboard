@@ -17,8 +17,8 @@ def load_series():
     df = df.applymap(lambda x: x.strip())
     df = df.drop_duplicates(subset=["series_id", "series_title"])
     df = df.sort_values(by="series_title", ascending=True)
-    df["begin_year"] = pd.to_numeric(df["begin_year"], errors="coerce")
-    df = df[df["begin_year"] >= 2017]
+    df["end_year"] = pd.to_numeric(df["end_year"], errors="coerce")
+    df = df[df["end_year"] >= 2017]
     return df[["series_id", "series_title"]].to_dict(orient="records")
 
 
