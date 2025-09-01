@@ -59,7 +59,7 @@ if selected:
     series_id = selected["series_id"]
     series_title = selected["series_title"]
     st.write(f"**Selected ID:** `{series_id}`")
-    st.caption(series_title)
+    st.write(f"`{series_title}`")
 
     # Filter prices for this series and year
     df_filtered = prices[(prices["series_id"] == series_id)]
@@ -131,7 +131,7 @@ if selected:
     merged["bitcoin_price"] = merged["bitcoin_price"].round(2)
 
     # display
-    st.write("### Annual average price (USD and BTC)")
+    st.write("##### Annual average price (USD and Bitcoin)")
 
     df_display = merged.copy()
     df_display["Price (USD)"] = df_display["price_in_usd"].map(
