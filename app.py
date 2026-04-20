@@ -41,7 +41,7 @@ def highlight_changes(df, numeric_cols):
 def load_series():
     df = pd.read_csv("ap.series", sep="\t", dtype=str, keep_default_na=False)
     df.columns = df.columns.str.strip()
-    df = df.applymap(lambda x: x.strip())
+    df = df.apply(lambda x: x.strip())
 
     # drop duplicate id/title combos
     df = df.drop_duplicates(subset=["series_id", "series_title"])
