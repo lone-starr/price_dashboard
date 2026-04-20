@@ -1,4 +1,4 @@
-series_id        	area_code	item_code	series_title	footnote_codes	begin_year	begin_period	end_year	end_period
+series_id        	area_code	item_code	series_title	footnote_codes	begin_year	begin_period	end_year	end_period 
 APU0000701111    	0000	701111	Flour, white, all purpose, per lb. (453.6 gm) in U.S. city average, average price, not seasonally adjusted		1980	M01	2026	M03
 APU0000701311    	0000	701311	Rice, white, long grain, precooked (cost per pound/453.6 grams) in U.S. city average, average price, not seasonally adjusted		1980	M01	1981	M12
 APU0000701312    	0000	701312	Rice, white, long grain, uncooked, per lb. (453.6 gm) in U.S. city average, average price, not seasonally adjusted		1980	M01	2026	M03
