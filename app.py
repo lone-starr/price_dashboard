@@ -78,7 +78,7 @@ def load_bitcoin_price():
     df.columns = df.columns.str.strip()
     df = df.apply(lambda col: col.str.strip() if col.dtype == "object" else col)
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
-    df = df[df["year"] >= 2017]
+    df = df[df["year"] >= 2020]
     return df[["year", "period", "value"]]
 
 
