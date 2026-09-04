@@ -55,7 +55,7 @@ def load_series():
 
     # filter by end year
     df["end_year"] = pd.to_numeric(df["end_year"], errors="coerce")
-    df = df[df["end_year"] >= 2017]
+    df = df[df["end_year"] >= 2020]
 
     return df[["series_id", "series_title"]].to_dict(orient="records")
 
