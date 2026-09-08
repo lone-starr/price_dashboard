@@ -55,7 +55,7 @@ def load_series():
 
     # filter by end year
     df["end_year"] = pd.to_numeric(df["end_year"], errors="coerce")
-    df = df[df["end_year"] >= 2020]
+    df = df[df["end_year"] >= 2021]
 
     return df[["series_id", "series_title"]].to_dict(orient="records")
 
@@ -67,7 +67,7 @@ def load_price():
     df.columns = df.columns.str.strip()
     df = df.apply(lambda col: col.str.strip() if col.dtype == "object" else col)
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
-    df = df[df["year"] >= 2020]
+    df = df[df["year"] >= 2021]
     return df[["series_id", "year", "period", "value"]]
 
 
@@ -78,7 +78,7 @@ def load_bitcoin_price():
     df.columns = df.columns.str.strip()
     df = df.apply(lambda col: col.str.strip() if col.dtype == "object" else col)
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
-    df = df[df["year"] >= 2020]
+    df = df[df["year"] >= 2021]
     return df[["year", "period", "value"]]
 
 
