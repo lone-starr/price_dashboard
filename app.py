@@ -41,7 +41,8 @@ def highlight_changes(df, numeric_cols):
 def load_series():
     df = pd.read_csv("ap.series", sep="\t", dtype=str, keep_default_na=False)
     df.columns = df.columns.str.strip()
-    df = df.apply(lambda col: col.str.strip() if col.dtype == "object" else col)
+    df = df.apply(lambda col: col.str.strip()
+                  if col.dtype == "object" else col)
 
     # drop duplicate id/title combos
     df = df.drop_duplicates(subset=["series_id", "series_title"])
@@ -55,7 +56,7 @@ def load_series():
 
     # filter by end year
     df["end_year"] = pd.to_numeric(df["end_year"], errors="coerce")
-    df = df[df["end_year"] >= 2021]
+    df = df[df["end_year"] >= 2022]
 
     return df[["series_id", "series_title"]].to_dict(orient="records")
 
@@ -65,9 +66,10 @@ def load_price():
     df = pd.read_csv("ap.data.0.Current", sep="\t",
                      dtype=str, keep_default_na=False)
     df.columns = df.columns.str.strip()
-    df = df.apply(lambda col: col.str.strip() if col.dtype == "object" else col)
+    df = df.apply(lambda col: col.str.strip()
+                  if col.dtype == "object" else col)
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
-    df = df[df["year"] >= 2021]
+    df = df[df["year"] >= 2022]
     return df[["series_id", "year", "period", "value"]]
 
 
@@ -76,9 +78,10 @@ def load_bitcoin_price():
     df = pd.read_csv("bitcoin.price.period", sep="\t",
                      dtype=str, keep_default_na=False)
     df.columns = df.columns.str.strip()
-    df = df.apply(lambda col: col.str.strip() if col.dtype == "object" else col)
+    df = df.apply(lambda col: col.str.strip()
+                  if col.dtype == "object" else col)
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
-    df = df[df["year"] >= 2021]
+    df = df[df["year"] >= 2022]
     return df[["year", "period", "value"]]
 
 
